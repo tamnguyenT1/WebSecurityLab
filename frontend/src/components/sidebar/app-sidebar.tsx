@@ -14,132 +14,36 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router";
 
 // This is sample data.
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Getting Started",
-      url: "#",
+      title: "1. Bypass Frontend Restrictions",
+      url: "/bypass-frontend/labs/lab01",
       items: [
         {
-          title: "Installation",
+          title: "Lý thuyết",
           url: "#",
         },
         {
-          title: "Project Structure",
-          url: "#",
+          title: "Labs",
+          url: "/bypass-frontend/labs",
         },
       ],
     },
     {
-      title: "Build Your Application",
-      url: "#",
+      title: "2. Auth & Session Security",
+      url: "/bypass-frontend/labs/lab01",
       items: [
         {
-          title: "Routing",
+          title: "Lý thuyết",
           url: "#",
         },
         {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
+          title: "Labs",
           url: "#",
         },
       ],
@@ -154,19 +58,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           versions={data.versions}
           defaultVersion={data.versions[0]}
         />
-        <SearchForm />
       </SidebarHeader>
       <SidebarContent>
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+            <SidebarGroupLabel className="font-semibold">
+              {item.title}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       isActive={item.isActive}
-                      render={<a href={item.url} />}
+                      render={<Link to={item.url} />}
                     >
                       {item.title}
                     </SidebarMenuButton>
