@@ -6,20 +6,21 @@ import api from "@/lib/axios";
 
 const Vulnerable = () => {
   const TICKET_PRICE = 500000;
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [discount, setDiscount] = useState(0);
   const [resData, setResData] = useState(null);
 
   const handleBuyTicket = async () => {
     try {
-      const res = await api.post("/bypass-frontend/labs/lab01/vulnerable", {
+      const res = await api.post("/bypass-frontend/labs/lab02/vulnerable", {
         quantity,
+        discount,
       });
       setResData(res.data);
     } catch (error) {
       console.error("Lỗi mua vé:", error);
     }
   };
-  console.log(resData);
 
   return (
     <div>
@@ -35,19 +36,28 @@ const Vulnerable = () => {
                 {TICKET_PRICE.toLocaleString()}
               </strong>
             </p>
-            <p>
-              Giới giạn: <strong>tối đa 2 vé / sinh viên</strong>
-            </p>
+
             <p>Số lượng:</p>
             <Input
               type="number"
               min="1"
               max="2"
-              defaultValue={1}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
               className="border border-gray-600 w-20 p-1 "
             />
+            <p>Discount (%)</p>
+            <Input
+              type="number"
+              value={discount}
+              disabled
+              onChange={(e) => setDiscount(Number(e.target.value))}
+              className="border border-gray-600 w-20 p-1 "
+            />
+            <p>
+              Discount chỉ được hệ thống tự động xác nhận dựa trên loại tài
+              khoản
+            </p>
             <Button type="submit" onClick={() => handleBuyTicket()}>
               Mua vé
             </Button>
@@ -62,13 +72,14 @@ const Vulnerable = () => {
           <CardContent className="flex flex-col gap-2">
             {resData === null ? (
               ""
-            ) : resData.quantity > 2 ? (
+            ) : resData.discount > 0 ? (
               <p className="font-semibold text-green-500">
-                Challenge thành công !!
+                Challenge thành công !! Sản phẩm được giảm giá{" "}
+                {resData.discount}%
               </p>
             ) : (
               <p className="font-semibold text-red-500">
-                Challenge thất bại !! Số vé chưa vượt qua 2
+                Challenge thất bại !! Sản phẩm chưa được giảm giá
               </p>
             )}
 

@@ -1,25 +1,29 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import api from "@/lib/axios";
 
-const Vulnerable = () => {
+const Secure = () => {
   const TICKET_PRICE = 500000;
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [resData, setResData] = useState(null);
+  const discount = useRef(null);
 
-  const handleBuyTicket = async () => {
+  const handleBuyTicket = async (e) => {
+    e.preventDefault();
+    const value = discount.current.value;
+
     try {
-      const res = await api.post("/bypass-frontend/labs/lab01/vulnerable", {
+      const res = await api.post("/bypass-frontend/labs/lab02/secure", {
         quantity,
+        value,
       });
       setResData(res.data);
     } catch (error) {
       console.error("Lỗi mua vé:", error);
     }
   };
-  console.log(resData);
 
   return (
     <div>
@@ -35,20 +39,33 @@ const Vulnerable = () => {
                 {TICKET_PRICE.toLocaleString()}
               </strong>
             </p>
-            <p>
-              Giới giạn: <strong>tối đa 2 vé / sinh viên</strong>
-            </p>
+
             <p>Số lượng:</p>
             <Input
               type="number"
               min="1"
               max="2"
-              defaultValue={1}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
               className="border border-gray-600 w-20 p-1 "
             />
-            <Button type="submit" onClick={() => handleBuyTicket()}>
+            <p>Discount (%)</p>
+
+            <form onSubmit={handleBuyTicket} id="buy-ticket">
+              <Input
+                ref={discount}
+                type="number"
+                value={discount.current ?? 0}
+                disabled
+                className="border border-gray-600 w-20 p-1 "
+              />
+            </form>
+
+            <p>
+              Discount chỉ được hệ thống tự động xác nhận dựa trên loại tài
+              khoản
+            </p>
+            <Button type="submit" form="buy-ticket">
               Mua vé
             </Button>
           </CardContent>
@@ -60,18 +77,13 @@ const Vulnerable = () => {
         <Card className="p-4 w-full max-w-[500px]">
           <CardHeader className="font-semibold">Checkout</CardHeader>
           <CardContent className="flex flex-col gap-2">
-            {resData === null ? (
-              ""
-            ) : resData.quantity > 2 ? (
-              <p className="font-semibold text-green-500">
-                Challenge thành công !!
-              </p>
+            {resData > 0 ? (
+              <p className="font-semibold text-red-500">{resData.message}</p>
             ) : (
-              <p className="font-semibold text-red-500">
-                Challenge thất bại !! Số vé chưa vượt qua 2
+              <p className="font-semibold text-green-500">
+                Thanh toán thành công !
               </p>
             )}
-
             <p>
               Tổng tiền:{" "}
               <strong className="text-red-600">{resData?.total}</strong>
@@ -86,4 +98,4 @@ const Vulnerable = () => {
   );
 };
 
-export default Vulnerable;
+export default Secure;

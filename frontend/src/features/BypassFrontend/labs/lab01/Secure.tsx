@@ -11,7 +11,7 @@ const Secure = () => {
 
   const handleBuyTicket = async () => {
     try {
-      const res = await api.post("/bypass-frontend/labs/lab01/vulnerable", {
+      const res = await api.post("/bypass-frontend/labs/lab01/secure", {
         quantity,
       });
       setResData(res.data);
@@ -62,14 +62,12 @@ const Secure = () => {
           <CardContent className="flex flex-col gap-2">
             {resData === null ? (
               ""
-            ) : resData.quantity > 2 ? (
+            ) : resData.quantity ? (
               <p className="font-semibold text-green-500">
-                Challenge thành công !!
+                Mua vé thành công !!
               </p>
             ) : (
-              <p className="font-semibold text-red-500">
-                Challenge thất bại !!
-              </p>
+              <p className="font-semibold text-red-500">{resData.message}</p>
             )}
 
             <p>

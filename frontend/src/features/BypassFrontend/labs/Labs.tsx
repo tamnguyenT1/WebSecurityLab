@@ -1,4 +1,4 @@
-import { ChevronRightIcon, ExternalLinkIcon } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import {
   Item,
   ItemActions,

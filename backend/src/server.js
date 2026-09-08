@@ -14,6 +14,7 @@ app.use(
 
 app.use(express.json());
 
+// Bypass Frontend Restrictions
 app.use("/api", bypassFrontendRoutes);
 
 app.listen(PORT, () => {
